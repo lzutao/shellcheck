@@ -9,13 +9,13 @@ addons:
 env: TARGET=x86_64-unknown-linux-gnu
 
 install:
-  - cabal install --dependencies-only --ghc-options="-optlo-Os -split-sections"
+  - cabal install --dependencies-only --ghc-options="-optlo-O3 -split-sections"
 
 script:
   # Remove all tests to reduce binary size
   - ./striptests
   - cabal build Paths_ShellCheck
-  - ghc -optl-static -optl-pthread -isrc -idist/build/autogen --make shellcheck -split-sections -optc-Wl,--gc-sections -optlo-Os
+  - ghc -optl-static -optl-pthread -isrc -idist/build/autogen --make shellcheck -split-sections -optc-Wl,--gc-sections -optlo-O3
   - strip --strip-all shellcheck
   - ls -l shellcheck
   - printf '%s\n' "#!/bin/sh" "echo 'hello world'" > myscript
